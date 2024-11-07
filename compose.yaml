@@ -1,0 +1,40 @@
+services:
+
+  backend:
+    hostname: backend
+    image: node:22.11.0-alpine3.20
+    working_dir: /app
+    user: node
+    command: npm run dev
+    volumes:
+      - ./backend:/app
+    ports:
+      - '8080:8080'
+    networks:
+      - app-network
+
+  mongodb:
+    hostname: mongodb
+    image: mongo:8.0.3
+    restart: on-failure
+#    volumes:
+#      - ./data/mongodb:/data/db
+    networks:
+      - app-network
+
+  mongo-express:
+    hostname: mongo-express
+    image: mongo-express:1.0.2-20-alpine3.19
+    restart: on-failure
+    ports:
+      - "8081:8081"
+    environment:
+      - ME_CONFIG_MONGODB_URL=mongodb://mongodb:27017/app
+      - ME_CONFIG_BASICAUTH=false
+    depends_on:
+      - mongodb
+    networks:
+      - app-network
+
+networks:
+  app-network:
