@@ -1,5 +1,18 @@
 services:
 
+  frontend:
+    hostname: backend
+    image: node:22.11.0-alpine3.20
+    working_dir: /app
+    user: node
+    command: npm run dev -- --host --port 8000
+    volumes:
+      - ./frontend:/app
+    ports:
+      - '8000:8000'
+    networks:
+      - app-network
+
   backend:
     hostname: backend
     image: node:22.11.0-alpine3.20
@@ -17,8 +30,8 @@ services:
     hostname: mongodb
     image: mongo:8.0.3
     restart: on-failure
-#    volumes:
-#      - ./data/mongodb:/data/db
+    volumes:
+      - ./data/mongodb:/data/db
     networks:
       - app-network
 
