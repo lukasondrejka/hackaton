@@ -4,6 +4,19 @@
 
 Development setup with using Docker Compose.
 
+**Requirements:**
+- Node.js
+- Docker
+
+### Install dependencies
+
+```bash
+npm install --prefix backend
+npm install --prefix frontend
+```
+
+### Start app with Docker Compose
+
 ```bash
 docker compose up
 ```

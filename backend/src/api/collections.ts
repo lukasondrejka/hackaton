@@ -4,12 +4,12 @@ import { mongoose } from "../app";
 const router = Router();
 
 // Get all documents from a collection
-router.get("/api/:collection", async (req: Request, res: Response) => {
+router.get("/api/collections/:collection", async (req: Request, res: Response) => {
   const { collection } = req.params;
 
   try {
     const data = await mongoose.connection
-      .collection(collection.toLowerCase())
+      .collection(collection)
       .find(req.query)
       .toArray();
 
@@ -23,12 +23,12 @@ router.get("/api/:collection", async (req: Request, res: Response) => {
 });
 
 // Get a document by id from a collection
-router.get("/api/:collection/:id", async (req: Request, res: Response) => {
+router.get("/api/collections/:collection", async (req: Request, res: Response) => {
   const { collection, id } = req.params;
 
   try {
     const data = await mongoose.connection
-      .collection(collection.toLowerCase())
+      .collection(collection)
       .findOne({
         _id: new mongoose.Types.ObjectId(id)
       });
@@ -43,14 +43,14 @@ router.get("/api/:collection/:id", async (req: Request, res: Response) => {
 });
 
 // Create a new document in a collection
-router.post("/api/:collection", async (req: Request, res: Response) => {
+router.post("/api/collections/:collection", async (req: Request, res: Response) => {
   const { collection } = req.params;
 
   console.log(req.body);
 
   try {
     const result = await mongoose.connection
-      .collection(collection.toLowerCase())
+      .collection(collection)
       .insertOne({
         ...req.body,
         createdAt: new Date(),
@@ -59,7 +59,7 @@ router.post("/api/:collection", async (req: Request, res: Response) => {
 
     if (result.insertedId) {
       res.status(201).json(await mongoose.connection
-        .collection(collection.toLowerCase())
+        .collection(collection)
         .findOne({ _id: result.insertedId }));
     } else {
       res.status(500).json({
@@ -77,12 +77,12 @@ router.post("/api/:collection", async (req: Request, res: Response) => {
 });
 
 // Update a document by id in a collection
-router.put("/api/:collection/:id", async (req: Request, res: Response) => {
+router.put("/api/collections/:collection", async (req: Request, res: Response) => {
   const { collection, id } = req.params;
 
   try {
     const result = await mongoose.connection
-      .collection(collection.toLowerCase())
+      .collection(collection)
       .updateOne(
         { _id: new mongoose.Types.ObjectId(id) },
         { $set: { ...req.body, updatedAt: new Date() } }
@@ -98,12 +98,12 @@ router.put("/api/:collection/:id", async (req: Request, res: Response) => {
 });
 
 // Delete a document by id from a collection
-router.delete("/api/:collection/:id", async (req: Request, res: Response) => {
+router.delete("/api/collections/:collection", async (req: Request, res: Response) => {
   const { collection, id } = req.params;
 
   try {
     const result = await mongoose.connection
-      .collection(collection.toLowerCase())
+      .collection(collection)
       .deleteOne({
         _id: new mongoose.Types.ObjectId(id),
       });

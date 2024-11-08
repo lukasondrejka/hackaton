@@ -2,10 +2,10 @@ services:
 
   frontend:
     hostname: backend
-    image: node:22.11.0-alpine3.20
+    image: node:22.11.0
     working_dir: /app
     user: node
-    command: npm run dev -- --host --port 8000
+    command: npm run dev -- --port 8000 --host
     volumes:
       - ./frontend:/app
     ports:
@@ -15,10 +15,12 @@ services:
 
   backend:
     hostname: backend
-    image: node:22.11.0-alpine3.20
+    image: node:22.11.0
     working_dir: /app
     user: node
     command: npm run dev
+    environment:
+      - MISTRALAI_API_KEY=Kd7LHVHCXMZHRuxcjQgz72F7UJikpo2W
     volumes:
       - ./backend:/app
     ports:
